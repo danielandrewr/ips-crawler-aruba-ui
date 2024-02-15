@@ -31,7 +31,8 @@ if __name__ == '__main__':
     aruba_ipaddress = os.getenv('ARUBA_IPADDRESS')
 
     database = Database()
+    duration = args.time
     data_controller = APDataCollector(
-        ap_names, aruba_username, aruba_password, aruba_ipaddress, database)
+        ap_names, aruba_username, aruba_password, aruba_ipaddress, duration, database)
 
     data_controller.collect_and_store_data()
