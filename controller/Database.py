@@ -73,7 +73,7 @@ class Database(DatabaseInterface):
 
         if 'Monitored AP Table' in documents and isinstance(documents['Monitored AP Table'], list):
             monitored_ap_table = documents['Monitored AP Table']
-            print(documents)
+            #print(documents)
 
             # Iterate through each entry in the 'Monitored AP Table' and add 'ap_name' to each document
             for entry in monitored_ap_table:

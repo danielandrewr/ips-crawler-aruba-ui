@@ -13,6 +13,18 @@ from controller.Database import DatabaseInterface
 
 load_dotenv()
 
+class CollectorInterface:
+    def get_aruba_token(self):
+        pass
+
+    def get_ap_data(self, token, ap_name):
+        pass
+
+    def get_eirp_data(self, token, ap_name):
+        pass
+
+    def collect_and_store_data(self):
+        pass
 
 class APDataCollector:
     """Collects and stores data from Aruba APs.
@@ -125,7 +137,7 @@ class APDataCollector:
         Returns:
             None
         """
-        end_time = time.time() + (self.duration * 60)
+        end_time = time.time() + (self.duration * 60)        
         self.database.connect()
         collection_name = 'AP'
         count = 0
