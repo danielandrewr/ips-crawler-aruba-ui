@@ -10,23 +10,11 @@ from test_ap.show_command_test import list_show_command_test
 from utils.parse_data import parse_data
 from utils.hashing import create_hash
 from controller.Database import DatabaseInterface
+from CollectorInterface import CollectorInterface
 
 load_dotenv()
 
-class CollectorInterface:
-    def get_aruba_token(self):
-        pass
-
-    def get_ap_data(self, token, ap_name):
-        pass
-
-    def get_eirp_data(self, token, ap_name):
-        pass
-
-    def collect_and_store_data(self):
-        pass
-
-class APDataCollector:
+class APDataCollector(CollectorInterface):
     """Collects and stores data from Aruba APs.
 
     This class is responsible for collecting data from Aruba Access Points (APs), processing it, and storing it
@@ -47,7 +35,9 @@ class APDataCollector:
     """
 
     def __init__(self, ap_names: list[str], aruba_username: str, aruba_password: str,
-                 aruba_ipaddress: str, duration: int, database: DatabaseInterface):
+                 aruba_ipaddress: str, duration: int, database: DatabaseInterface,
+                 collection_name: str
+                 ):
         """Initialize the APDataCollector instance."""
         self.ap_names = ap_names
         self.ARUBA_USERNAME = aruba_username
@@ -55,6 +45,7 @@ class APDataCollector:
         self.ARUBA_IPADDRESS = aruba_ipaddress
         self.duration = duration
         self.database = database
+        self.collection_name = collection_name
 
     def get_aruba_token(self):
         """Get the Aruba access token.
@@ -139,7 +130,6 @@ class APDataCollector:
         """
         end_time = time.time() + (self.duration * 60)        
         self.database.connect()
-        collection_name = 'AP'
         count = 0
         while time.time() < end_time:
             data_rows = {}
@@ -207,8 +197,8 @@ class APDataCollector:
                                 'count': count, 'bssid': monitored_ap['bssid'], 'chan': chan, 'band': band}
 
                         data_rows[(essid, chan)][rssi_key] = monitored_ap['curr-rssi']
-                        print(f"[INFO] Inserting documents into '{collection_name}' collection")
-                        self.database.insert_documents(collection_name, data_rows)
+                        print(f"[INFO] Inserting documents into '{self.collection_name}' collection")
+                        self.database.insert_documents(self.collection_name, data_rows)
                         
                 except requests.exceptions.ConnectionError as ConnectionError:
                     print(f"[ERROR] Unexpected Connection Error Encountered! \n {ConnectionError}")

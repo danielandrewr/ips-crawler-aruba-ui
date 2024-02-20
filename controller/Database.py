@@ -42,10 +42,16 @@ class Database(DatabaseInterface):
             else:
                 raise ValueError("[ERROR-DB] Missing MongoDB environment variables.")
         except Exception as e:
-            print("[Error-DB] An error occurred while connecting to the database:", e)
+            print("[Error-DB] An error occurrsewhile connecting to the database:", e)
 
     def get_collection(self, collection_name):
-        return self.db[collection_name]
+        if self.db:
+            if collection_name in self.db.list_collection_names():
+                return self.db[collection_name]
+            else:
+                raise ValueError(f"[ERROR-DB] {collection_name} does not exist!")
+        else:
+            raise ValueError("[ERROR-DB]] No Connection to DB established!")
 
     def insert_documents(self, collection_name, documents):
         collection = self.get_collection(collection_name)
