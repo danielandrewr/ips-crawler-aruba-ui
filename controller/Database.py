@@ -45,13 +45,13 @@ class Database(DatabaseInterface):
             print("[Error-DB] An error occurrsewhile connecting to the database:", e)
 
     def get_collection(self, collection_name):
-        if self.db:
+        if self.db is not None:
             if collection_name in self.db.list_collection_names():
                 return self.db[collection_name]
             else:
                 raise ValueError(f"[ERROR-DB] {collection_name} does not exist!")
         else:
-            raise ValueError("[ERROR-DB]] No Connection to DB established!")
+            raise ValueError("[ERROR-DB] No Connection to DB established!")
 
     def insert_documents(self, collection_name, documents):
         collection = self.get_collection(collection_name)
