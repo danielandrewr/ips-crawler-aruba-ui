@@ -10,7 +10,7 @@ from test_ap.show_command_test import list_show_command_test
 from utils.parse_data import parse_data
 from utils.hashing import create_hash
 from controller.Database import DatabaseInterface
-from CollectorInterface import CollectorInterface
+from controller.CollectorInterface import CollectorInterface
 
 load_dotenv()
 
