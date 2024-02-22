@@ -23,8 +23,8 @@ def list_show_command(aopsid, aruba_id, command):
 
     status_code = res.status_code
     if status_code != 200:
-        print("Error Status Code: ", status_code)
-        print("Reason: ", res.reason)
+        print("[ERROR-REQUEST] Error Status Code: ", status_code)
+        print("[ERROR-REQUEST] Reason: ", res.reason)
         res = ''
     else:
         res = res.json()
