@@ -19,6 +19,15 @@ if __name__ == '__main__':
         type=int
     )
 
+    parser.add_argument(
+        '--cn',
+        '--collection_name',
+        help="db collection name to store data into",
+        dest='collection_name',
+        default='raw_data',
+        type=str
+    )
+
     args = parser.parse_args()
 
     ap_names = ['D1_1F_AP01', 'D1_1F_AP02', 
@@ -31,8 +40,10 @@ if __name__ == '__main__':
     aruba_ipaddress = os.getenv('ARUBA_IPADDRESS')
 
     database = Database()
+    
     duration = args.time
-    data_controller = APDataCollector(
-        ap_names, aruba_username, aruba_password, aruba_ipaddress, duration, database)
+    collection_name = args.collection_name
 
+    data_controller = APDataCollector(
+        ap_names, aruba_username, aruba_password, aruba_ipaddress, duration, database, collection_name)
     data_controller.collect_and_store_data()
