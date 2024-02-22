@@ -169,11 +169,10 @@ class APDataCollector(CollectorInterface):
                     list_ap_database['timestamp'] = datetime.datetime.now()
                     list_ap_database['ap_name'] = ap_name
 
-                    print(
-                        "[INFO] Inserting raw documents into 'raw_crawl' collection")
+                    print(f"[INFO] Inserting raw documents into {self.collection_name} collection")
 
                     self.database.insert_raw_documents(
-                        'raw_crawl', list_ap_database)
+                        self.collection_name, list_ap_database)
 
                     ap_data = list_ap_database['Monitored AP Table']
 
