@@ -28,19 +28,30 @@ if __name__ == '__main__':
         type=str
     )
 
+    parser.add_argument(
+        '--f',
+        '--file',
+        help='file name that contains list of AP names',
+        dest='file',
+        type=str
+    )
+
     args = parser.parse_args()
 
-    ap_names = ['D1_1F_AP01', 'D1_1F_AP02', 
-                'D1_1F_AP03', 'D1_1F_AP04',
-                'D1_1F_AP05', 'D1_1F_AP06', 
-                'D1_1F_AP07', 'D1_1F_AP08']  # Your AP names
+    if args.file:
+        with open(args.file, 'r') as file:
+            ap_names = [line.strip() for line in file if line.strip()]
+    else:  
+        ap_names = ['FT-ICELL-LT3-LAB.KOM1-AP1', 'FT-ICELL-LT3-LAB.KOM2-AP2', 
+                    'FT-ICELL-LT3-LAB.KOM3-AP3', 'FT-ICELL-LT3-LAB.PRINTING-AP5',
+                    'FT-ICELL-LT3-LAB.PRINTING-AP6', 'FT-ICELL-LT3-LOBBY-AP4']
 
     aruba_username = os.getenv('ARUBA_USERNAME')
     aruba_password = os.getenv('ARUBA_PASSWORD')
     aruba_ipaddress = os.getenv('ARUBA_IPADDRESS')
 
     database = Database()
-    
+
     duration = args.time
     collection_name = args.collection_name
 
