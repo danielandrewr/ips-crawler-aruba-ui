@@ -185,6 +185,7 @@ class APDataCollector(CollectorInterface):
                         monitored_ap['timestamp'] = date_now
                         monitored_ap['count'] = count
                         essid = monitored_ap['essid']
+                        ap_type = monitored_ap['ap-type']
 
                         if 'band/chan/ch-width/ht-type' in monitored_ap:
                             band, chan, ch_width, ht_type = parse_data(
@@ -197,7 +198,8 @@ class APDataCollector(CollectorInterface):
 
                         if (essid, chan) not in data_rows:
                             data_rows[(essid, chan)] = {
-                                'time': date_now, 'count': count, 'bssid': monitored_ap['bssid'], 'chan': chan, 'band': band}
+                                'time': date_now, 'count': count, 'bssid': monitored_ap['bssid'], 'ap_type': ap_type, 
+                                'chan': chan, 'band': band}
 
                         data_rows[(essid, chan)][rssi_key] = monitored_ap['curr-rssi']
                         print(f"[INFO] Inserting documents into '{self.collection_name}' collection")
