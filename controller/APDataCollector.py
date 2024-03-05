@@ -147,19 +147,22 @@ class APDataCollector(CollectorInterface):
                 for ap in list_ap_database['Monitored AP Table']:
                     ap['bssid'] = create_hash(ap['bssid'])
 
+                radio0_eirp = ''
+                radio1_eirp = ''
+                
                 # Should there be a request error, handles the error by retrying to fetch EIRP data
-                for _ in range(retries):
-                    try:
-                        radio0_eirp, radio1_eirp = self.get_eirp_data(token, ap_name)
-                        break
-                    except requests.exceptions.ConnectionError as ConnectionError:
-                        print(f"[WARNING] Connection Error Encountered. Retrying ...")
-                        time.sleep(5)
-                    except Exception as e:
-                        print("[ERROR] An Unknown Error Encountered ", e)
-                        break
-                    finally:
-                        pass
+                # for _ in range(retries):
+                #     try:
+                #         radio0_eirp, radio1_eirp = self.get_eirp_data(token, ap_name)
+                #         break
+                #     except requests.exceptions.ConnectionError as ConnectionError:
+                #         print(f"[WARNING] Connection Error Encountered. Retrying ...")
+                #         time.sleep(5)
+                #     except Exception as e:
+                #         print("[ERROR] An Unknown Error Encountered ", e)
+                #         break
+                #     finally:
+                #         pass
                 
                 list_ap_database['Radio0_EIRP'] = radio0_eirp
                 list_ap_database['Radio1_EIRP'] = radio1_eirp
@@ -177,8 +180,9 @@ class APDataCollector(CollectorInterface):
                     ap_data = list_ap_database['Monitored AP Table']
 
                     for monitored_ap in ap_data:
+                        date_now = time.time()
                         monitored_ap['ap_name'] = ap_name
-                        monitored_ap['timestamp'] = time.time()
+                        monitored_ap['timestamp'] = date_now
                         monitored_ap['count'] = count
                         essid = monitored_ap['essid']
 
@@ -193,7 +197,7 @@ class APDataCollector(CollectorInterface):
 
                         if (essid, chan) not in data_rows:
                             data_rows[(essid, chan)] = {
-                                'count': count, 'bssid': monitored_ap['bssid'], 'chan': chan, 'band': band}
+                                'time': date_now, 'count': count, 'bssid': monitored_ap['bssid'], 'chan': chan, 'band': band}
 
                         data_rows[(essid, chan)][rssi_key] = monitored_ap['curr-rssi']
                         print(f"[INFO] Inserting documents into '{self.collection_name}' collection")
