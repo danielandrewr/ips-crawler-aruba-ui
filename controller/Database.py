@@ -61,7 +61,9 @@ class Database(DatabaseInterface):
             document = {
                 '_id': ObjectId(),
                 'essid': essid,
-                'count': values['count']
+                'count': values['count'],
+                'timestamp': values['timestamp'],
+                'ap-type': values['ap-type']
             }
             for ap_name, rssi in values.items():
                 if ap_name not in ['count']:
@@ -94,12 +96,14 @@ class Database(DatabaseInterface):
                 formatted_documents.append(entry)
 
         #print(formatted_documents)
-        if formatted_documents:
-            collection = self.get_collection(collection_name)
-            collection.insert_many(formatted_documents)
-            print("[INFO-DB] Successfully inserted raw documents")
-        else:
-            print("[ERROR-DB] No raw documents to insert.")
+        #debug
+        print(formatted_documents[1])
+        #if formatted_documents:
+            #collection = self.get_collection(collection_name)
+            #collection.insert_many(formatted_documents)
+            #print("[INFO-DB] Successfully inserted raw documents")
+        #else:
+            #print("[ERROR-DB] No raw documents to insert.")
 
     def close(self):
         if self.client:
